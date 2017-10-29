@@ -65,7 +65,7 @@ bot.dialog('GreetingsReply', function (session, args) {
 
 bot.dialog('NoneReply', function (session, args) {
     // retrieve hotel name from matched entities
-    session.send('I did not understand ...' + intents + ' I can provide weather details. \nPlease Try asking me how is the weather in Pune');
+    session.send('I did not understand ... I can provide weather details. \nPlease Try asking me how is the weather in Pune');
     session.endDialog();
 
 }).triggerAction({
