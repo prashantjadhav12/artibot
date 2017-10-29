@@ -41,8 +41,8 @@ var luisAPIKey = process.env.LuisAPIKey;
 var luisAPIHostName = process.env.LuisAPIHostName || 'westus.api.cognitive.microsoft.com';
 
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
+//const LuisModelUrl = 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/12d8dcfa-871b-47a8-9ec0-711fdb660257?subscription-key=6edac315b1ca4db49c34dbb86a3474b6&timezoneOffset=0&verbose=true&q=';
 
-console.log("XXXXXXXXXXXXXXX  " + LuisModelUrl);
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 //var intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -52,19 +52,21 @@ var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 
 bot.recognizer(recognizer);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] })
-console.log("XXXXXXXXXXXXXXX intents :  " + intents);
+
 
 bot.dialog('GreetingsReply', function (session, args) {
     // retrieve hotel name from matched entities
     session.send('Hello Sir/ Madam \n How I can help you');
+    session.endDialog();
 
 }).triggerAction({
     matches: 'Greeting'
 });
 
-bot.dialog('GreetingReply', function (session, args) {
+bot.dialog('NoneReply', function (session, args) {
     // retrieve hotel name from matched entities
     session.send('I did not understand ...' + intents + ' I can provide weather details. \nPlease Try asking me how is the weather in Pune');
+    session.endDialog();
 
 }).triggerAction({
     matches: 'None'
