@@ -32,10 +32,6 @@ server.post('/api/messages', connector.listen());
 //var bot = new builder.UniversalBot(connector);
 var bot = new builder.UniversalBot(connector, function (session, args) {
     session.send("Hi... I'm the artibot by Prashant. I can provide weather details. \nPlease ask how is the weather in Pune");
-    if (!session.userData.notes) {
-        session.userData.notes = {};
-        console.log("initializing userData.notes in default message handler");
-    }
  });
 
 
