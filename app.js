@@ -42,6 +42,7 @@ var luisAPIHostName = process.env.LuisAPIHostName || 'westus.api.cognitive.micro
 
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
+console.log("XXXXXXXXXXXXXXX  " + LuisModelUrl);
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 //var intents = new builder.IntentDialog({ recognizers: [recognizer] })
@@ -50,6 +51,8 @@ var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 */
 
 bot.recognizer(recognizer);
+var intents = new builder.IntentDialog({ recognizers: [recognizer] })
+console.log("XXXXXXXXXXXXXXX intents :  " + intents);
 
 bot.dialog('GreetingsReply', function (session, args) {
     // retrieve hotel name from matched entities
@@ -61,7 +64,7 @@ bot.dialog('GreetingsReply', function (session, args) {
 
 bot.dialog('GreetingReply', function (session, args) {
     // retrieve hotel name from matched entities
-    session.send('I did not understand ... I can provide weather details. \nPlease Try asking me how is the weather in Pune');
+    session.send('I did not understand ...' + intents + ' I can provide weather details. \nPlease Try asking me how is the weather in Pune');
 
 }).triggerAction({
     matches: 'None'
