@@ -31,7 +31,7 @@ server.post('/api/messages', connector.listen());
 // Create your bot with a function to receive messages from the user
 //var bot = new builder.UniversalBot(connector);
 var bot = new builder.UniversalBot(connector, function (session, args) {
-    session.send("Hi... I'm the artibot by Prashant. I can provide weather details. \nPlease ask how is the weather in Pune");
+    session.send("Hi... I'm the artibot by Prashant. I can provide weather details. \nPlease Try asking me how is the weather in Pune");
  });
 
 
@@ -51,7 +51,7 @@ var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 
 bot.recognizer(recognizer);
 
-bot.dialog('GreetingReply', function (session, args) {
+bot.dialog('GreetingsReply', function (session, args) {
     // retrieve hotel name from matched entities
     session.send('Hello Sir/ Madam \n How I can help you');
 
@@ -61,7 +61,7 @@ bot.dialog('GreetingReply', function (session, args) {
 
 bot.dialog('GreetingReply', function (session, args) {
     // retrieve hotel name from matched entities
-    session.send('I did not understand ... I can provide weather details. \nPlease ask how is the weather in Pune');
+    session.send('I did not understand ... I can provide weather details. \nPlease Try asking me how is the weather in Pune');
 
 }).triggerAction({
     matches: 'None'
@@ -72,5 +72,5 @@ bot.dialog('GreetingReply', function (session, args) {
  //   session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 //});
 
-bot.dialog('/', intents);    
+//bot.dialog('/', intents);    
 
