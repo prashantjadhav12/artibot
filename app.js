@@ -22,12 +22,11 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users 
 server.post('/api/messages', connector.listen());
 
-
-//var bot = new builder.UniversalBot(connector);
-/*var bot = new builder.UniversalBot(connector, function (session, args) {
-    session.send("Hi... I'm the artibot by Prashant. I can provide weather details. \nPlease Try asking me how is the weather in Pune");
- });
-*/
+var DialogLabels = {
+    Hotels: 'Hotels',
+    Flights: 'Flights',
+    Support: 'Support'
+};
 
  var bot = new builder.UniversalBot(connector, [
     function (session) {
