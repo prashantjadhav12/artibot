@@ -12,7 +12,32 @@ var DialogLabels = {
     Other : 'Other'
 };
 module.exports = [
-    
+
+
+
+    function (session) {
+        session.send('Welcome to the Incedent reporting system!');
+       
+        session.send('Please share you location');
+
+    },
+    function (session, results, next) {
+
+     session.send("session.message.entities.length : %s", session.message.entities.length);   
+
+    if (session.message.entities.length > 0) {
+        var type = session.message.entities[0].type;
+        session.send("session.message.entities[0].type : %s", type);
+        session.send("session.message.entities[0].geo : %s", session.message.entities[0].geo);   
+        if (type.toLowerCase() == "place") {
+            session.userData.location = session.message.entities[0].geo;
+            doSomethingWithUserLocation();
+        }
+    }
+
+
+    },
+ 
     // Destination
     function (session) {
         session.send('Welcome to the Incedent reporting system!');
