@@ -56,6 +56,7 @@ var DialogLabels = {
             case DialogLabels.Yes:
                 session.send('channelId : %s', session.message.address.channelId);
                 session.send('User : %s', session.message.address.user.name);
+                session.beginDialog('/getUserLocation');
                 return session.beginDialog('reportIncedent');
             case DialogLabels.No:
                 return session.beginDialog('support');
@@ -71,6 +72,22 @@ bot.dialog('support', require('./dialogs/support'))
     .triggerAction({
         matches: [/help/i, /support/i, /problem/i]
     });
+
+bot.dialog('/getUserLocation', [
+    function (session){
+        builder.Prompts.text(session, "Send me your current location.");
+    },
+    function (session) {
+        if(session.message.entities.length != 0){
+            session.userData.lat = session.message.entities[0].geo.latitude;
+            session.userData.lon = session.message.entities[0].geo.longitude;
+            
+            session.endDialog("%s  %s", session.userData.lat, session.userData.lon);
+        }else{
+            session.endDialog("Sorry, I didn't get your location.");
+        }
+    }
+]);
 
 // log any bot errors into the console
 bot.on('error', function (e) {
