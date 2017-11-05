@@ -20,6 +20,8 @@ module.exports = [
        
         session.send('Please share you location');
 
+        builder.Prompts.attachment(session, "Upload a location for me to transform.");
+
     },
     function (session, results, next) {
 
