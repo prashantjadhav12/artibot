@@ -1,9 +1,6 @@
-/*-----------------------------------------------------------------------------
-A simple echo bot for the Microsoft Bot Framework. 
------------------------------------------------------------------------------*/
-
 var restify = require('restify');
 var builder = require('botbuilder');
+
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -23,9 +20,9 @@ var connector = new builder.ChatConnector({
 server.post('/api/messages', connector.listen());
 
 var DialogLabels = {
-    Hotels: 'Hotels',
-    Flights: 'Flights',
-    Support: 'Support'
+    Yes: 'Yes',
+    No: 'No',
+    Help: 'Help'
 };
 
  var bot = new builder.UniversalBot(connector, [
@@ -33,8 +30,8 @@ var DialogLabels = {
         // prompt for search option
         builder.Prompts.choice(
             session,
-            'Are you looking for a flight or a hotel?',
-            [DialogLabels.Flights, DialogLabels.Hotels],
+            'Do you want to report an incedent?',
+            [DialogLabels.Yes, DialogLabels.No, DialogLabels.Help],
             {
                 maxRetries: 3,
                 retryPrompt: 'Not a valid option'
@@ -56,10 +53,26 @@ var DialogLabels = {
         // continue on proper dialog
         var selection = result.response.entity;
         switch (selection) {
-            case DialogLabels.Flights:
-                return session.beginDialog('flights');
-            case DialogLabels.Hotels:
-                return session.beginDialog('hotels');
+            case DialogLabels.Yes:
+                session.send('channelId : %s', session.message.address.channelId);
+                session.send('User : %s', session.message.address.user.name);
+                return session.beginDialog('reportIncedent');
+            case DialogLabels.No:
+                return session.beginDialog('support');
+            case DialogLabels.Help:
+                return session.beginDialog('support');
         }
     }
 ]);
+
+bot.dialog('reportIncedent', require('./dialogs/reportIncedent'));
+//bot.dialog('hotels', require('./hotels'));
+bot.dialog('support', require('./dialogs/support'))
+    .triggerAction({
+        matches: [/help/i, /support/i, /problem/i]
+    });
+
+// log any bot errors into the console
+bot.on('error', function (e) {
+    console.log('And error ocurred', e);
+});
