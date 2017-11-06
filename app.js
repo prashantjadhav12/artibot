@@ -53,7 +53,7 @@ var DialogLabels = {
 
 
         builder.Prompts.text(session, "Please share you location");
-        session.beginDialog('fbmessenger_getlocation');
+        session.beginDialog('/fbmessenger_getlocation');
 
         // continue on proper dialog
         var selection = result.response.entity;
@@ -108,7 +108,7 @@ bot.dialog('/getUserLocation', [
 ]);
 */
 
-bot.dialog('fbmessenger_getlocation', new builder.SimpleDialog((session, args) => {
+bot.dialog('/fbmessenger_getlocation', new builder.SimpleDialog((session, args) => {
     
     var initialRetryFlag = 3;
     var retryFlag = session.dialogData.hasOwnProperty('maxRetryFlag') 
