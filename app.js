@@ -178,7 +178,7 @@ bot.on('error', function (e) {
 //where we create a facebook share button using sourceEvent
 bot.dialog("/send_share_button", function (session) {
     //construct a new message with the current session context
-    var msg = new botbuilder.Message(session).sourceEvent({
+    var msg = new builder.Message(session).sourceEvent({
         //specify the channel
         facebook: {
             //format according to channel's requirements
