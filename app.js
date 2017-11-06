@@ -1,5 +1,7 @@
 var restify = require('restify');
 var builder = require('botbuilder');
+//var express = require("express");
+//var request = require("request-promise");
 //require('./dialogs/fbmessenger_getlocation.js')();
 
 
@@ -52,8 +54,16 @@ var DialogLabels = {
         });
 
 
-        builder.Prompts.text(session, "Please share you location");
-        session.beginDialog('/fbmessenger_getlocation');
+      //  builder.Prompts.text(session, "Please share you location");
+          //  session.beginDialog('/fbmessenger_getlocation');
+
+        session.send("Share details");
+        session.beginDialog("/send_share_button");
+
+
+    
+
+       
 
         // continue on proper dialog
         var selection = result.response.entity;
@@ -161,4 +171,45 @@ bot.dialog('/fbmessenger_getlocation', new builder.SimpleDialog((session, args) 
 // log any bot errors into the console
 bot.on('error', function (e) {
     console.log('And error ocurred', e);
+});
+
+
+
+//where we create a facebook share button using sourceEvent
+bot.dialog("/send_share_button", function (session) {
+    //construct a new message with the current session context
+    var msg = new botbuilder.Message(session).sourceEvent({
+        //specify the channel
+        facebook: {
+            //format according to channel's requirements
+            //(in our case, the above JSON required by Facebook)
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [
+                        {
+                            title: "Microsoft Bot Framework",
+                            subtitle: "Check it out!",
+                            buttons: [
+                                {
+                                    type: "web_url",
+                                    url: "https://dev.botframework.com",
+                                    title: "Go to Dev Portal"
+                                },
+                                {
+                                    //this is our share button
+                                    type: "element_share"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            } //end of attachment
+        }
+    });
+
+    //send message
+    session.send(msg);
+    session.endDialog("Show your friends!");
 });
