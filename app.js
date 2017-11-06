@@ -50,6 +50,10 @@ var DialogLabels = {
             session.endDialog();
         });
 
+
+        builder.Prompts.text(session, "Please share you location");
+        session.beginDialog('/fbmessenger_getlocation');
+
         // continue on proper dialog
         var selection = result.response.entity;
         switch (selection) {
@@ -69,6 +73,7 @@ var DialogLabels = {
 ]);
 
 bot.dialog('reportIncedent', require('./dialogs/reportIncedent'));
+bot.dialog('fbmessenger_getlocation', require('./dialogs/fbmessenger_getlocation'));
 //bot.dialog('hotels', require('./hotels'));
 bot.dialog('support', require('./dialogs/support'))
     .triggerAction({

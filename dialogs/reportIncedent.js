@@ -13,8 +13,6 @@ var DialogLabels = {
 };
 module.exports = [
 
-
-
     function (session) {
         session.send('Welcome to the Incedent reporting system!');
        
