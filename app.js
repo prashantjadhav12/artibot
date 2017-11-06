@@ -42,7 +42,7 @@ var bot = new builder.UniversalBot(connector, [
 ]);
 
 locationPrompt.create(bot);
-
+/*
 bot.use({
     botbuilder: function (session, next) {
         if (session.message.source == "facebook") {
@@ -57,7 +57,7 @@ bot.use({
 
         next();
     }
-});
+});*/
 
 
 bot.dialog('/startdemo', [
