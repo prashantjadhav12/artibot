@@ -1,5 +1,6 @@
 var restify = require('restify');
 var builder = require('botbuilder');
+require('./dialogs/fbmessenger_getlocation.js')();
 
 
 // Setup Restify Server
@@ -73,7 +74,7 @@ var DialogLabels = {
 ]);
 
 bot.dialog('reportIncedent', require('./dialogs/reportIncedent'));
-bot.dialog('fbmessenger_getlocation', require('./dialogs/fbmessenger_getlocation'));
+//bot.dialog('fbmessenger_getlocation', require('./dialogs/fbmessenger_getlocation'));
 //bot.dialog('hotels', require('./hotels'));
 bot.dialog('support', require('./dialogs/support'))
     .triggerAction({
