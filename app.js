@@ -174,7 +174,7 @@ bot.on('error', function (e) {
 });
 
 
-
+/*
 //where we create a facebook share button using sourceEvent
 bot.dialog("/send_share_button", function (session) {
     //construct a new message with the current session context
@@ -207,6 +207,25 @@ bot.dialog("/send_share_button", function (session) {
                 }
             } //end of attachment
         }
+    });
+
+    //send message
+    session.send(msg);
+    session.endDialog("Show your friends!");
+});
+*/
+
+//where we create a facebook share button using sourceEvent
+bot.dialog("/send_share_button", function (session) {
+    //construct a new message with the current session context
+    var msg = new builder.Message(session).sourceEvent({
+        //specify the channel
+        facebook: {
+                quick_replies:
+                [{
+                    content_type: "location"
+                }]
+            }
     });
 
     //send message
