@@ -1,6 +1,6 @@
 var restify = require('restify');
 var builder = require('botbuilder');
-require('./dialogs/fbmessenger_getlocation.js')();
+//require('./dialogs/fbmessenger_getlocation.js')();
 
 
 // Setup Restify Server
@@ -74,7 +74,7 @@ var DialogLabels = {
 ]);
 
 bot.dialog('reportIncedent', require('./dialogs/reportIncedent'));
-//bot.dialog('fbmessenger_getlocation', require('./dialogs/fbmessenger_getlocation'));
+//bot.dialog('fbmessenger_getlocation', require('/fbmessenger_getlocation'));
 //bot.dialog('hotels', require('./hotels'));
 bot.dialog('support', require('./dialogs/support'))
     .triggerAction({
@@ -107,13 +107,19 @@ bot.dialog('/getUserLocation', [
     }
 ]);
 */
-/*
+
 bot.dialog('/fbmessenger_getlocation', new builder.SimpleDialog((session, args) => {
     
     var initialRetryFlag = 3;
     var retryFlag = session.dialogData.hasOwnProperty('maxRetryFlag') 
     ? session.dialogData.maxRetryFlag : initialRetryFlag;
     var entityList = session.message.entities;
+
+
+    session.send("session.dialogData.hasOwnProperty('maxRetryFlag') : "+ session.dialogData.hasOwnProperty('maxRetryFlag'));
+    session.send("Array.isArray(entityList) : "+ Array.isArray(entityList));
+    session.send("entityList.length "+ entityList.length);
+    session.send("entityList[0].geo "+ entityList[0].geo);
 
     if (session.dialogData.hasOwnProperty('maxRetryFlag') 
     && Array.isArray(entityList) && entityList.length 
@@ -133,6 +139,8 @@ bot.dialog('/fbmessenger_getlocation', new builder.SimpleDialog((session, args) 
     }
     else {
 
+         session.send("inside else...");
+         
         var replyMsg = new builder.Message(session).text
         ("Please share your location.");
         replyMsg.sourceEvent({
@@ -148,7 +156,7 @@ bot.dialog('/fbmessenger_getlocation', new builder.SimpleDialog((session, args) 
         retryFlag -= 1;
         session.dialogData.maxRetryFlag = retryFlag;
     }
-}));*/
+}));
 
 // log any bot errors into the console
 bot.on('error', function (e) {
