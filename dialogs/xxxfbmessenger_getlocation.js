@@ -1,5 +1,5 @@
 module.exports = function () {
-    bot.dialog('/fbmessenger_getlocation', new builder.SimpleDialog((session, args) => {
+    bot.dialog('/xxxfbmessenger_getlocationxxx', new builder.SimpleDialog((session, args) => {
     
     var initialRetryFlag = 3;
     var retryFlag = session.dialogData.hasOwnProperty('maxRetryFlag') 
