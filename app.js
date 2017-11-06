@@ -1,5 +1,8 @@
 var restify = require('restify');
 var builder = require('botbuilder');
+var locationPrompt = require('./prompts/location-prompt');
+var quickReplies = require('./facebook/quickreplies');
+
 //var express = require("express");
 //var request = require("request-promise");
 //require('./dialogs/fbmessenger_getlocation.js')();
@@ -28,6 +31,84 @@ var DialogLabels = {
     Help: 'Help'
 };
 
+
+var bot = new builder.UniversalBot(connector, [
+    function (session, args, next) {
+        session.beginDialog('/startdemo');
+    },
+    function (session, args, next) {
+
+    }
+]);
+
+locationPrompt.create(bot);
+
+bot.use({
+    botbuilder: function (session, next) {
+        if (session.message.source == "facebook") {
+            if (session.message.sourceEvent && session.message.sourceEvent.message) {
+                if (session.message.sourceEvent.message.quick_reply) {
+                    session.message.text = session.message.sourceEvent.message.quick_reply.payload;
+                    session.send(`Quick reply text received: ${session.message.text}`);
+                    session.endDialog();
+                }
+            }
+        }
+
+        next();
+    }
+});
+
+
+bot.dialog('/startdemo', [
+    function (session, args, next) {
+        builder.Prompts.choice(session, 'This bot demonstrates using Facebook Quick Replies, which demo would you like to see?', ['Text', 'Location']);
+    },
+    function (session, args, next) {
+        if (args.response) {
+            var choice = args.response.entity;
+            switch (choice) {
+                case 'Text':
+                    session.replaceDialog('/textdemo');
+                    break;
+                case 'Location':
+                    session.replaceDialog('/locationdemo');
+            }
+        }
+    }
+]);
+
+// Demonstrates text based quick replies
+bot.dialog('/textdemo', [
+    function (session, args, next) {
+        var message = new builder.Message(session).text('Pick a size:');
+        quickReplies.AddQuickReplies(session, message, [
+            new quickReplies.QuickReplyText('Small', 'small'),
+            new quickReplies.QuickReplyText('Medium', 'medium'),
+            new quickReplies.QuickReplyText('Large', 'large')
+        ]);
+
+        session.send(message);
+    }
+]);
+
+bot.dialog('/locationdemo', [
+    function (session, args, next) {
+        locationPrompt.beginDialog(session);
+    },
+    function (session, args, next) {
+        if (args.response) {
+            var location = args.response.entity;
+            session.send(`Location received: ${location.title}, lat: ${location.coordinates.lat}, long: ${location.coordinates.long}`);
+            session.endDialog();
+        } else {
+            session.send('No location received');
+            session.endDialog();            
+        }
+    }
+])
+
+/*
  var bot = new builder.UniversalBot(connector, [
     function (session) {
         // prompt for search option
@@ -74,7 +155,7 @@ var DialogLabels = {
                // session.beginDialog('/fbmessenger_getlocation');
                 
                 
-                return session.beginDialog('reportIncedent');
+            //    return session.beginDialog('reportIncedent');
             case DialogLabels.No:
                 return session.beginDialog('support');
             case DialogLabels.Help:
@@ -82,6 +163,10 @@ var DialogLabels = {
         }
     }
 ]);
+
+
+*/
+
 
 bot.dialog('reportIncedent', require('./dialogs/reportIncedent'));
 //bot.dialog('fbmessenger_getlocation', require('/fbmessenger_getlocation'));
