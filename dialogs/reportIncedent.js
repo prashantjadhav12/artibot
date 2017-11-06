@@ -18,9 +18,9 @@ module.exports = [
     function (session) {
         session.send('Welcome to the Incedent reporting system!');
        
-        session.send('Please share you location');
+        //session.send('Please share you location');
 
-        builder.Prompts.attachment(session, "Upload a location for me to transform.");
+        builder.Prompts.text(session, "Please share you location");
 
     },
     function (session, results, next) {
