@@ -89,6 +89,8 @@ bot.dialog('/textdemo', [
         ]);
 
         session.send(message);
+
+        session.endDialog();
     }
 ]);
 
