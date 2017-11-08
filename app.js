@@ -1,6 +1,5 @@
 var restify = require('restify');
 var builder = require('botbuilder');
-var locationPrompt = require('./prompts/location-prompt');
 var dlgIncedent = require('./dialogs/incedent');
 //var quickReplies = require('./facebook/quickreplies');
 
@@ -38,7 +37,7 @@ var bot = new builder.UniversalBot(connector, [
     }
 ]);
 
-locationPrompt.create(bot);
+//locationPrompt.create(bot);
 
 
 bot.dialog('/start', [
@@ -82,21 +81,7 @@ bot.dialog('/start', [
 ]);
 
 
-bot.dialog('/locationdemo', [
-    function (session, args, next) {
-        locationPrompt.beginDialog(session);
-    },
-    function (session, args, next) {
-        if (args.response) {
-            var location = args.response.entity;
-            session.send(`Location received: ${location.title}, lat: ${location.coordinates.lat}, long: ${location.coordinates.long}`);
-            session.endDialog();
-        } else {
-            session.send('No location received');
-            session.endDialog();            
-        }
-    }
-])
+
 
 
 //bot.dialog('reportIncedent', require('./dialogs/reportIncedent'));

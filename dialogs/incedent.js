@@ -1,4 +1,5 @@
 var builder = require('botbuilder');
+var locationPrompt = require('../prompts/location-prompt'); 
 /*var dlgIncedent = require('./dialogs/accident');
 var dlgIncedent = require('./dialogs/fire');
 var dlgIncedent = require('./dialogs/riot');
@@ -39,14 +40,38 @@ bot.dialog("incident", [
         var selection = results.response.entity;
         switch (selection) {
             case DialogLabels.Accident:
-                return session.beginDialog('accident');
-            case DialogLabels.Fire:
-                return session.beginDialog('fire');
-            case DialogLabels.Riot:
-                return session.beginDialog('riot');
+                session.send('channelId : %s', session.message.address.channelId);
+                session.send('User : %s', session.message.address.user.name); 
+                locationPrompt.create(bot);
+                session.replaceDialog('/locationdlg');
+                //return session.beginDialog('accident');
+           // case DialogLabels.Fire:
+               // return session.beginDialog('fire');
+           // case DialogLabels.Riot:
+               // return session.beginDialog('riot');
         }
     }
     
  ] );
 
+
+
+ bot.dialog('/locationdlg', [
+    function (session, args, next) {
+        locationPrompt.beginDialog(session);
+    },
+    function (session, args, next) {
+        if (args.response) {
+            var location = args.response.entity;
+            session.send(`Location received: ${location.title}, lat: ${location.coordinates.lat}, long: ${location.coordinates.long}`);
+            session.endDialog();
+        } else {
+            session.send('No location received');
+            session.endDialog();            
+        }
+    }
+])
+
 };
+
+
