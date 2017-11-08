@@ -1,5 +1,12 @@
 var builder = require('botbuilder');
-var Store = require('../services/store');
+/*var dlgIncedent = require('./dialogs/accident');
+var dlgIncedent = require('./dialogs/fire');
+var dlgIncedent = require('./dialogs/riot');
+var dlgIncedent = require('./dialogs/others');*/
+
+exports.beginDialog = function (session, options) {
+    session.beginDialog('incident', options || {});
+}
 
 var googleMapsClient = require('@google/maps').createClient({
     key: 'AIzaSyCIWDcaf2GyEiUYlwODIilapnFWu5BYzD8'
@@ -11,35 +18,9 @@ var DialogLabels = {
     Riot : 'Riot',
     Other : 'Other'
 };
-module.exports = [
 
-    function (session) {
-        session.send('Welcome to the Incedent reporting system!');
-       
-        //session.send('Please share you location');
-
-        builder.Prompts.text(session, "Please share you location");
-
-    },
-    function (session, results, next) {
-
-     session.send("session.message.entities.length : %s", session.message.entities.length);   
-
-    if (session.message.entities.length > 0) {
-        var type = session.message.entities[0].type;
-        session.send("session.message.entities[0].type : %s", type);
-        session.send("session.message.entities[0].geo : %s", session.message.entities[0].geo);   
-        if (type.toLowerCase() == "place") {
-            session.userData.location = session.message.entities[0].geo;
-            doSomethingWithUserLocation();
-        }
-    }
-
-    next();
-
-    },
- 
-    // Destination
+exports.create = function (bot) {
+bot.dialog("incident", [
     function (session) {
         session.send('Welcome to the Incedent reporting system!');
        
@@ -64,6 +45,8 @@ module.exports = [
             case DialogLabels.Riot:
                 return session.beginDialog('riot');
         }
+    }
+    
+ ] );
 
-
-    }];
+};
