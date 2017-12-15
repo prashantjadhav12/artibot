@@ -13,7 +13,7 @@ var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
-  
+    
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
     appId: process.env.MicrosoftAppId,
@@ -31,19 +31,29 @@ var DialogLabels = {
     Help: 'Help'
 };
 
+var Actions = {
+    ReportIncident: 'Report an incident',
+    SearchPeople: 'Search for People',
+    SearchIncident: 'Search for incident'
+};
 
-var bot = new builder.UniversalBot(connector, [
+
+
+
+ var bot = new builder.UniversalBot(connector, [
     function (session) {
-        
-        // prompt for search option
+
+        session.send("Hello, I am a XYZ bot and I would be happy to assist you further.");
+
         builder.Prompts.choice(
             session,
-            'Do you want to report an incedent?',
-            [DialogLabels.Yes, DialogLabels.No, DialogLabels.Help],
+            'You can perform below action by clicking on them or by typing the action',
+            [Actions.ReportIncident, Actions.SearchIncident, Actions.SearchPeople],
             {
                 maxRetries: 3,
                 retryPrompt: 'Not a valid option'
             });
+     
     },
     function (session, result) {
         if (!result.response) {
@@ -59,30 +69,20 @@ var bot = new builder.UniversalBot(connector, [
         });
 
 
-      //  builder.Prompts.text(session, "Please share you location");
-          //  session.beginDialog('/fbmessenger_getlocation');
-
-        session.send("Share details");
-        session.beginDialog("/send_share_button");
-
-
-    
-
-       
+          
 
         // continue on proper dialog
         var selection = result.response.entity;
         switch (selection) {
-            case DialogLabels.Yes:
+            case Actions.ReportIncident:
                 session.send('channelId : %s', session.message.address.channelId);
                 session.send('User : %s', session.message.address.user.name);
                // session.beginDialog('/fbmessenger_getlocation');
-                
-                
-            //    return session.beginDialog('reportIncedent');
-            case DialogLabels.No:
+                            
+                return session.beginDialog('dlgreportIncident');
+            case Actions.SearchIncident:
                 return session.beginDialog('support');
-            case DialogLabels.Help:
+            case Actions.SearchPeople:
                 return session.beginDialog('support');
         }
     }
@@ -103,6 +103,14 @@ var bot = new builder.UniversalBot(connector, [
 ]);
 
 */
+
+
+bot.dialog('dlgreportIncident', require('./dialogs/reportIncident'));
+bot.dialog('support', require('./dialogs/support'))
+    .triggerAction({
+        matches: [/help/i, /support/i, /problem/i]
+    });
+
 
 
 // START LOCATION UTILITY
@@ -176,18 +184,7 @@ bot.dialog('/locationdemo', [
     }
 ])
 
-// END LOCATION UTILITY
-
-
-bot.dialog('reportIncedent', require('./dialogs/reportIncedent'));
-//bot.dialog('fbmessenger_getlocation', require('/fbmessenger_getlocation'));
-//bot.dialog('hotels', require('./hotels'));
-bot.dialog('support', require('./dialogs/support'))
-    .triggerAction({
-        matches: [/help/i, /support/i, /problem/i]
-    });
-
-
+/*
 bot.dialog('/fbmessenger_getlocation', new builder.SimpleDialog((session, args) => {
     
     var initialRetryFlag = 3;
@@ -237,13 +234,14 @@ bot.dialog('/fbmessenger_getlocation', new builder.SimpleDialog((session, args) 
         session.dialogData.maxRetryFlag = retryFlag;
     }
 }));
+*/
 
 // log any bot errors into the console
 bot.on('error', function (e) {
     console.log('And error ocurred', e);
 });
 
-
+/*
 
 //where we create a facebook share button using sourceEvent
 bot.dialog("/send_share_button", function (session) {
@@ -262,3 +260,6 @@ bot.dialog("/send_share_button", function (session) {
     session.send(msg);
     session.endDialog("Show your friends!");
 });
+
+*/
+// END LOCATION UTILITY

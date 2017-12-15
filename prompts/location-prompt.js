@@ -24,6 +24,8 @@ exports.create = function (bot) {
         .onDefault(function (session) {
             if (session.message.sourceEvent.message && session.message.sourceEvent.message.attachments) {
                 var attachment = session.message.sourceEvent.message.attachments[0];
+
+            
                 if (attachment.type == 'location') {
                     session.endDialogWithResult({ response: { entity: {
                         title: attachment.title,
