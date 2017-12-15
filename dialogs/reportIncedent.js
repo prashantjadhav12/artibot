@@ -11,6 +11,7 @@ var DialogLabels = {
     Riot : 'Riot',
     Other : 'Other'
 };
+
 module.exports = [
 
     function (session) {

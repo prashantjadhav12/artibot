@@ -33,6 +33,67 @@ var DialogLabels = {
 
 
 var bot = new builder.UniversalBot(connector, [
+    function (session) {
+        
+        // prompt for search option
+        builder.Prompts.choice(
+            session,
+            'Do you want to report an incedent?',
+            [DialogLabels.Yes, DialogLabels.No, DialogLabels.Help],
+            {
+                maxRetries: 3,
+                retryPrompt: 'Not a valid option'
+            });
+    },
+    function (session, result) {
+        if (!result.response) {
+            // exhausted attemps and no selection, start over
+            session.send('Ooops! Too many attemps :( But don\'t worry, I\'m handling that exception and you can try again!');
+            return session.endDialog();
+        }
+
+        // on error, start over
+        session.on('error', function (err) {
+            session.send('Failed with message: %s', err.message);
+            session.endDialog();
+        });
+
+
+      //  builder.Prompts.text(session, "Please share you location");
+          //  session.beginDialog('/fbmessenger_getlocation');
+
+        session.send("Share details");
+        session.beginDialog("/send_share_button");
+
+
+    
+
+       
+
+        // continue on proper dialog
+        var selection = result.response.entity;
+        switch (selection) {
+            case DialogLabels.Yes:
+                session.send('channelId : %s', session.message.address.channelId);
+                session.send('User : %s', session.message.address.user.name);
+               // session.beginDialog('/fbmessenger_getlocation');
+                
+                
+            //    return session.beginDialog('reportIncedent');
+            case DialogLabels.No:
+                return session.beginDialog('support');
+            case DialogLabels.Help:
+                return session.beginDialog('support');
+        }
+    }
+]);
+
+
+//Below section is related to the location utility
+
+/*
+
+var bot = new builder.UniversalBot(connector, [
     function (session, args, next) {
         session.beginDialog('/startdemo');
     },
@@ -40,6 +101,11 @@ var bot = new builder.UniversalBot(connector, [
 
     }
 ]);
+
+*/
+
+
+// START LOCATION UTILITY
 
 locationPrompt.create(bot);
 /*
@@ -110,64 +176,7 @@ bot.dialog('/locationdemo', [
     }
 ])
 
-/*
- var bot = new builder.UniversalBot(connector, [
-    function (session) {
-        // prompt for search option
-        builder.Prompts.choice(
-            session,
-            'Do you want to report an incedent?',
-            [DialogLabels.Yes, DialogLabels.No, DialogLabels.Help],
-            {
-                maxRetries: 3,
-                retryPrompt: 'Not a valid option'
-            });
-    },
-    function (session, result) {
-        if (!result.response) {
-            // exhausted attemps and no selection, start over
-            session.send('Ooops! Too many attemps :( But don\'t worry, I\'m handling that exception and you can try again!');
-            return session.endDialog();
-        }
-
-        // on error, start over
-        session.on('error', function (err) {
-            session.send('Failed with message: %s', err.message);
-            session.endDialog();
-        });
-
-
-      //  builder.Prompts.text(session, "Please share you location");
-          //  session.beginDialog('/fbmessenger_getlocation');
-
-        session.send("Share details");
-        session.beginDialog("/send_share_button");
-
-
-    
-
-       
-
-        // continue on proper dialog
-        var selection = result.response.entity;
-        switch (selection) {
-            case DialogLabels.Yes:
-                session.send('channelId : %s', session.message.address.channelId);
-                session.send('User : %s', session.message.address.user.name);
-               // session.beginDialog('/fbmessenger_getlocation');
-                
-                
-            //    return session.beginDialog('reportIncedent');
-            case DialogLabels.No:
-                return session.beginDialog('support');
-            case DialogLabels.Help:
-                return session.beginDialog('support');
-        }
-    }
-]);
-
-
-*/
+// END LOCATION UTILITY
 
 
 bot.dialog('reportIncedent', require('./dialogs/reportIncedent'));
