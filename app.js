@@ -106,6 +106,7 @@ var bot = new builder.UniversalBot(connector, [
 
 
 bot.dialog('dlgreportIncident', require('./dialogs/reportIncident'));
+bot.dialog('dlgAccident', require('./dialogs/accident'));
 bot.dialog('support', require('./dialogs/support'))
     .triggerAction({
         matches: [/help/i, /support/i, /problem/i]
