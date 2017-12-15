@@ -177,33 +177,7 @@ bot.dialog('support', require('./dialogs/support'))
     .triggerAction({
         matches: [/help/i, /support/i, /problem/i]
     });
-/*
-bot.dialog('/getUserLocation', [
-    function (session){
-        builder.Prompts.text(session, "Send me your current location.");
-    },
-    function (session) {
 
-        if (session.message.entities.length > 0) {
-            var type = session.message.entities[0].type;
-            if (type.toLowerCase() == "place") {
-                session.userData.location = session.message.entities[0].geo;
-                doSomethingWithUserLocation();
-            }
-        }
-
-
-        if(session.message.entities.length != 0){
-            session.userData.lat = session.message.entities[0].geo.latitude;
-            session.userData.lon = session.message.entities[0].geo.longitude;
-            
-            session.endDialog("%s  %s", session.userData.lat, session.userData.lon);
-        }else{
-            session.endDialog("Sorry, I didn't get your location.");
-        }
-    }
-]);
-*/
 
 bot.dialog('/fbmessenger_getlocation', new builder.SimpleDialog((session, args) => {
     
@@ -261,46 +235,6 @@ bot.on('error', function (e) {
 });
 
 
-/*
-//where we create a facebook share button using sourceEvent
-bot.dialog("/send_share_button", function (session) {
-    //construct a new message with the current session context
-    var msg = new builder.Message(session).sourceEvent({
-        //specify the channel
-        facebook: {
-            //format according to channel's requirements
-            //(in our case, the above JSON required by Facebook)
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "generic",
-                    elements: [
-                        {
-                            title: "Microsoft Bot Framework",
-                            subtitle: "Check it out!",
-                            buttons: [
-                                {
-                                    type: "web_url",
-                                    url: "https://dev.botframework.com",
-                                    title: "Go to Dev Portal"
-                                },
-                                {
-                                    //this is our share button
-                                    type: "element_share"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            } //end of attachment
-        }
-    });
-
-    //send message
-    session.send(msg);
-    session.endDialog("Show your friends!");
-});
-*/
 
 //where we create a facebook share button using sourceEvent
 bot.dialog("/send_share_button", function (session) {
