@@ -34,6 +34,5 @@ exports.create = function (bot) {
                 session.send("Sorry, try again.");
             }
         });
-        
         bot.dialog('location', prompt);
 }
