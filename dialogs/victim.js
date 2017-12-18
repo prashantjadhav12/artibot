@@ -21,14 +21,15 @@ module.exports = [
 
         // continue on proper dialog
         var selection = results.response.entity;
-        console.log('Selection: %s', selection);
         switch (selection) {
             case ReporterTypes.Victim:
                 return session.beginDialog('victim');
             case ReporterTypes.Reporter:
-                return session.beginDialog('accident');
+                return session.beginDialog('reporter');
         }
-       
+
+      
+        next();
     }
 ];
 

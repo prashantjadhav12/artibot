@@ -25,6 +25,9 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users 
 server.post('/api/messages', connector.listen());
 
+
+var UserNameKey = 'UserName';
+
 var DialogLabels = {
     Yes: 'Yes',
     No: 'No',
@@ -79,7 +82,7 @@ var Actions = {
                 session.send('User : %s', session.message.address.user.name);
                // session.beginDialog('/fbmessenger_getlocation');
                             
-                return session.beginDialog('dlgreportIncident');
+                return session.beginDialog('reportIncident');
             case Actions.SearchIncident:
                 return session.beginDialog('support');
             case Actions.SearchPeople:
@@ -105,8 +108,9 @@ var bot = new builder.UniversalBot(connector, [
 */
 
 
-bot.dialog('dlgreportIncident', require('./dialogs/reportIncident'));
-bot.dialog('dlgAccident', require('./dialogs/accident'));
+bot.dialog('reportIncident', require('./dialogs/reportIncident'));
+bot.dialog('accident', require('./dialogs/accident'));
+bot.dialog('reporter', require('./dialogs/reporter'));
 bot.dialog('support', require('./dialogs/support'))
     .triggerAction({
         matches: [/help/i, /support/i, /problem/i]

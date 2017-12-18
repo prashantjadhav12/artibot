@@ -17,7 +17,7 @@ exports.create = function (bot) {
 
             session.send(message);
         })
-        .matches(/(give up|quit|skip)/i, function (session) {
+        .matches(/(give up|quit|skip|1)/i, function (session) {
             // Return 'false' to indicate they gave up
             session.endDialogWithResult({ response: false });
         })

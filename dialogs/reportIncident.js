@@ -42,7 +42,7 @@ module.exports = [
         var selection = results.response.entity;
         switch (selection) {
             case IncidentTypes.Accident:
-                return session.beginDialog('dlgAccident');
+                return session.beginDialog('accident');
             case IncidentTypes.Fire:
                 return session.beginDialog('fire');
             case IncidentTypes.Theft:
