@@ -5,29 +5,27 @@ var IncidentLocation = {
     Highway: 'Highway',
     City: 'City'
 };
-
-var CityNameKey = 'CityName';
+var reporterNameKey = 'reporterName';
 
 module.exports = [
     function (session, results, next) {
-        builder.Prompts.text("I hope you are unharmed, what is your name?");
+        builder.Prompts.text(session, "I hope you are unharmed, what is your name?");
      
     },
 
     function (session, results, next) {
 
         if (results && results.response) {
-            session.userData[CityNameKey] = results.response;      
+            session.userData[reporterNameKey] = results.response;      
         }
         else {
-            session.userData[CityNameKey] = '';
+            session.userData[reporterNameKey] = '';
         }
 
-        var City = session.userData[CityNameKey];
+        var reporter = session.userData[reporterNameKey];
 
-        builder.Prompts.choice(
-        session,
-        "Ok %s, It's  so just of you to report this incident, really appreciate that. Where did this accident occurr?", City,
+        builder.Prompts.choice(session, "Ok '" + reporter + "', It's so just of you to report this incident,"
+        + " really appreciate that. Where did this accident occurr?",
         [IncidentLocation.Highway, IncidentLocation.City],
         {
             maxRetries: 3,
@@ -49,4 +47,3 @@ module.exports = [
         next();
     }
 ];
-

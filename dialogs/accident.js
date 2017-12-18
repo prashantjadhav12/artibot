@@ -10,7 +10,7 @@ module.exports = [
         builder.Prompts.choice(
             session,
             'May I know if you are a victim or a reporter?',
-            [ReporterTypes.Victim, ReporterTypes.Reporter],
+            [ReporterTypes.Reporter, ReporterTypes.Victim],
             {
                 maxRetries: 3,
                 retryPrompt: 'Not a valid option'
@@ -26,7 +26,7 @@ module.exports = [
             case ReporterTypes.Victim:
                 return session.beginDialog('victim');
             case ReporterTypes.Reporter:
-                return session.beginDialog('accident');
+                return session.beginDialog('reporter');
         }
        
     }
