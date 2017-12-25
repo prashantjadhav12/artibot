@@ -2,20 +2,25 @@ var querystring = require('querystring');
 var https = require('https');
 
 var host = 'localhost:8080';
-var defaultEndpoint = '/api';
 var username = 'username';
 var password = '*****';
 
 
+function performGetRequest(endpoint, data, success) {
+  performRequest(endpoint, 'GET', data, success);
+
+}
+
+function performPostRequest(endpoint, data, success) {
+  performRequest(endpoint, 'POST', data, success);
+}
 
 
 function performRequest(endpoint, method, data, success) {
   var dataString = JSON.stringify(data);
   var headers = {};
-  
-  endpoint =  defaultEndpoint + endpoint;
-  if (method == 'GET') {
-    defaultEndpoint
+    
+  if (method == 'GET') {    
     endpoint += '?' + querystring.stringify(data);
   }
   else {
