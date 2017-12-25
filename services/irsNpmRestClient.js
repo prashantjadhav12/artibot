@@ -31,6 +31,18 @@ function performPostRequest(endpoint, args, success) {
   client.post(baseUrl, args, success);
 }
 
+function performDeleteRequest(endpoint, args, success) {
+  baseUrl += endpoint;
+  client.delete(baseUrl, args, success);
+}
+
+function performPutRequest(endpoint, args, success) {
+  baseUrl += endpoint;
+  client.put(baseUrl, args, success);
+}
+
 module.exports.performGetRequest = performGetRequest;
 module.exports.performPostRequest = performPostRequest;
+module.exports.performPutRequest = performPutRequest;
+module.exports.performDeleteRequest = performDeleteRequest;
 
