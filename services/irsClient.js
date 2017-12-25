@@ -1,4 +1,4 @@
-var querystring = require('querystring');
+/*var querystring = require('querystring');
 var https = require('https');
 
 var host = 'localhost:8080';
@@ -54,4 +54,4 @@ function performRequest(endpoint, method, data, success) {
 
   req.write(dataString);
   req.end();
-}
+}*/
